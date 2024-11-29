@@ -1,5 +1,5 @@
 # Season-influence-on-my-listening-habit
-Analyzing the effect of seasons on music preferences using Spotify and PrettyMIDI.
+Analyzing the effect of seasons on music preferences using Spotify, AccuWeather and Genius API.
 
 ## Project Overview
 
