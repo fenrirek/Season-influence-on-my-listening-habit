@@ -3,7 +3,7 @@ Analyzing the effect of seasons on music preferences using Spotify and PrettyMID
 
 ## Project Overview
 
-This project explores the relationship between seasons and my music listening habits. By analyzing my Spotify listening history and enriching it with advanced audio features extracted using **PrettyMIDI**, the goal is to uncover how seasonal changes (winter, spring, summer, and fall) influence the type of music I listen to, including genres, tempos, and moods. Additionally, I aim to build predictive models to classify whether I would listen to a particular song in a specific season based on its audio features.
+This project explores how seasons and weather conditions influence my music listening habits. By analyzing my Spotify listening history, weather data from AccuWeather, and sentiment analysis of lyrics, the goal is to uncover patterns in music preferences such as genres, tempos, and moods across seasons.
 
 ---
 
@@ -15,27 +15,29 @@ This project explores the relationship between seasons and my music listening ha
   - **Artist**: The artist or band of the song.
   - **Played At**: Timestamp of when the track was played.
 
-### **Audio Feature Extraction with PrettyMIDI**
-- **Source**: MIDI files corresponding to Spotify tracks.
+### **Weather Data**
+- **Source**: AccuWeather API.
 - **Description**:
-  - MIDI files are analyzed using the `PrettyMIDI` Python library to extract advanced musical features:
-    - **Tempo**: Average tempo of the track.
-    - **Key and Mode**: Harmonic content of the track.
-    - **Pitch Class Distribution**: Distribution of pitches used in the track.
+  - Weather data will be fetched using the AccuWeather API, providing insights into the conditions during my listening sessions.
+  - Attributes included:
+    - **Temperature**: Ambient temperature at the time of listening.
+    - **Humidity**: Percentage humidity in the air.
+    - **Weather Type**: Conditions like sunny, cloudy, or rainy.
+    - **Location**: Retrieved using AccuWeather’s location services.
+  - Weather information will be aligned with Spotify data using the `Played At` timestamp.
 
-### **Seasonal Data**
-- **Source**: Derived from timestamps in Spotify data.
+### **Sentiment Analysis of Lyrics**
+- **Source**: Lyrics fetched using the Genius API.
 - **Description**:
-  - Seasons are assigned based on the month of the `Played At` timestamp:
-    - **Winter**: December, January, February
-    - **Spring**: March, April, May
-    - **Summer**: June, July, August
-    - **Fall**: September, October, November
-  - Each track is labeled with its corresponding season.
+  - Sentiment analysis will be performed on the lyrics to classify emotional tone (e.g., positive, neutral, negative).
+  - Examples of extracted features:
+    - Sentiment score (polarity of lyrics: positive, neutral, or negative).
+    - Emotion categories (happiness, sadness, etc.).
+  - Lyrics sentiment will be aligned with Spotify data to analyze patterns by weather conditions and seasons.
 
 ### **Combined Dataset**
-- The Spotify dataset is enriched with a `Season` column based on the `Played At` timestamp, creating a unified dataset with the following columns:
-  - `Track Name`, `Artist`, `Played At`, `Tempo`, `Energy`, `Weather Type`, `Temperature`, `Humidity`, `Season`.
+- The dataset integrates Spotify listening history, weather data, and sentiment analysis results, with columns like::
+  - `Track Name`, `Artist`, `Played At`, `Sentiment Score`, `Season`, `Weather Type`, `Temperature`, `Humidity`.
 
 ---
 
@@ -43,27 +45,35 @@ This project explores the relationship between seasons and my music listening ha
 
 ### **Data Collection**
 1. **Spotify Data**:
-   - Fetch listening history using the Spotify Web API (`user-read-recently-played` scope).
+   - Fetch listening history using the Spotify (`user-read-recently-played` scope).
    - Enrich the dataset with audio features using the `audio-features` endpoint.
-2. **MIDI Features**:
-   - Extract advanced features like `Tempo`, `Key`, and `Pitch Class Distribution` from MIDI files using PrettyMIDI.
-3. **Seasonal Data**:
-   - Categorize each track into a season (winter, spring, summer, fall) based on the month in the `Played At` timestamp.
+2. **Weather Data**:
+   - Fetch weather data using the AccuWeather API.
+   - Steps:
+     - Use the Geoposition API to retrieve `locationKey` based on my location.
+     - Use the `locationKey` to fetch current weather conditions.
+   - Align weather data with Spotify tracks based on the `Played At` timestamp.
+3. **Lyrics Data**:
+   - Retrieve lyrics using the Genius API and align them with Spotify tracks.
 
 ### **Exploratory Data Analysis (EDA)**
 - I aim to analyze:
   - Music preferences by season (e.g., genres, tempos, moods in summer vs. winter).
   - Trends in tempo, mood, and energy across months grouped by seasons.
-  - Trends in PrettyMIDI features like tempo and pitch distribution across months grouped by seasons.
+  - Trends in sentiment scores and genres across seasons.
 
 ### **Visualization**
 - I will try to uncover patterns and relationships between seasons and music preferences. Through visualizations such as bar charts, line graphs, and scatter plots, the analysis highlights trends in genres, tempos, and moods based on seasons.
 
+### **Sentiment Analysis**
+- Perform sentiment analysis on the lyrics to extract emotional tone and sentiment scores.
+- Align sentiment features with weather data to identify emotional trends.
+
 ### **Machine Learning**
-- If possible, I will try to build predictive models:
-  - Whether I would listen to a given song in a specific season based on its audio features.
-  - **Features**: `Tempo`, `Key`, `Pitch Class Distribution`.
-  - **Target Variable**: `Listen (Yes/No)` in a given season.
-  - **Techniques**: Logistic Regression, Random Forest, or Gradient Boosting.
+- If possible, I aim to build a classification model to predict whether I would listen to a song in specific weather conditions or seasons:
+- **Features**: Sentiment scores, genres, tempos, weather data.
+- **Target Variable**: `Listen (Yes/No)` based on weather and season.
+- **Techniques**:
+  - Logistic Regression, Random Forest Classifier, Gradient Boosting.
 
 ---
