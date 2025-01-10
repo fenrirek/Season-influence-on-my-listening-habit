@@ -18,7 +18,7 @@ This project explores how seasons and weather conditions influence my music list
   - **Played At**: Timestamp of when the track was played.
 
 ### **Combined Dataset**
-- The dataset integrates Spotify listening history, weather data, and sentiment analysis results, with columns like:
+- The dataset integrates Spotify listening history, weather data, and results, with columns like:
   - `Track Name`, `Artist`, `Played At`, `Season`, `Weather Type`, `Temperature`, `Humidity`.
 
 ---
